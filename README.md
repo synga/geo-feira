@@ -1,6 +1,6 @@
 # geo-feira
 
-Aplicativo de teste com funcionalidades que serão implementadas em um aplicativo já existente e em produção para serem utilizadas em uma feira de negócios que ocorrerá no meio do ano.
+Aplicativo teste com funcionalidades que serão implementadas em um aplicativo já existente e em produção para serem utilizadas em uma feira de negócios que ocorrerá no meio do ano.
 
 ## Tecnologias
 
@@ -21,7 +21,7 @@ Aplicativo de teste com funcionalidades que serão implementadas em um aplicativ
 
 ## Features
 
-- Uma bussola para indicar a direçã de um estande.
+- Uma bussola para indicar a direção de um estande.
 - Mapa utilizando gestures para manipulação da imagem e zoom.
 - Tirar uma foto com o logo da empresa e poder salvar essa foto ou compartilhar nas redes sociais.
 

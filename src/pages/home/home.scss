@@ -1,0 +1,16 @@
+page-home {
+  .track {
+    display: flex;
+    justify-content: center;
+
+    .ponteiro {
+      width: 50vw;
+      height: 50vw;
+    }
+  }
+
+  .btn {
+    display: flex;
+    justify-content: center;
+  }
+}

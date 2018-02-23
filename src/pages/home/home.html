@@ -1,0 +1,32 @@
+<ion-content>
+  <div class="track" padding>
+    <img src="assets/imgs/ponteiro.png" alt="ponteiro" id="ponteiro">
+  </div>
+  <br>
+  <h3 text-center>
+    Precisão:
+    <br> {{accuracy}}m
+  </h3>
+  <h3 text-center>
+    Distancia:
+    <br> {{dist}}m
+  </h3>
+  <ion-row>
+    <ion-col>
+      <div class="btn">
+        <button ion-button round (click)="showMap()">Mapa</button>
+      </div>
+    </ion-col>
+    <ion-col>
+      <div class="btn">
+        <button ion-button round (click)="showFrame()">Foto</button>
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <ion-footer>
+    <div class="btn">
+      <button ion-button round (click)="getPosition()">Posicionar Destino</button>
+    </div>
+  </ion-footer>
+</ion-content>

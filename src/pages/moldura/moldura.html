@@ -1,0 +1,35 @@
+<ion-content>
+  <!-- COM FOTO -->
+  <div class="foto" [hidden]="!picture">
+    <canvas id="moldura" #moldura [width]="widthSize" [height]="heightSize"></canvas>
+  </div>
+  <!-- SEM TIRAR FOTO -->
+  <div *ngIf="!picture" class="foto">
+    <img src="assets/imgs/wabiz.png" alt="Moldura">
+  </div>
+</ion-content>
+
+<ion-footer text-center>
+  <ion-buttons *ngIf="!picture">
+    <button ion-button icon-only round color="danger" (click)="goBack()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <button ion-button icon-only round color="secondary" (click)="takePicture()">
+      <ion-icon name="camera"></ion-icon>
+    </button>
+    <button ion-button icon-only round (click)="changeCameraDirection()">
+      <ion-icon name="refresh"></ion-icon>
+    </button>
+  </ion-buttons>
+  <ion-buttons *ngIf="picture">
+    <button ion-button icon-only round color="danger" (click)="cancelPhoto()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <button ion-button icon-only round color="secondary" (click)="sharePhoto()">
+      <ion-icon name="share"></ion-icon>
+    </button>
+    <button id="save" download="" href="" ion-button icon-only round (click)="savePhoto()">
+      <ion-icon name="photos"></ion-icon>
+    </button>
+  </ion-buttons>
+</ion-footer>

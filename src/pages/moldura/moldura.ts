@@ -103,7 +103,7 @@ export class MolduraPage {
               this.context = context;
               loading.dismiss();
             };
-            overlay.src = "../../assets/imgs/wabiz.png";
+            overlay.src = "assets/imgs/wabiz.png";
           });
         },
         err => {
@@ -157,9 +157,6 @@ export class MolduraPage {
         this.file
           .writeFile(this.saveFilePath, name, blob)
           .then(success => {
-            this.context.clearRect(0, 0, this.widthSize, this.heightSize);
-            this.picture = null;
-            this.cameraPreview.startCamera(this.cameraPreviewOpts);
             loading.dismiss();
             toastDone.present();
           })
@@ -207,125 +204,22 @@ export class MolduraPage {
    * Compartilha foto
    */
   sharePhoto = () => {
-    const actionSheet = this.actionSheet.create({
-      enableBackdropDismiss: false,
-      title: "Compartilhar",
-      buttons: [
-        {
-          text: "Facebook",
-          icon: "logo-facebook",
-          handler: this.shareViaFacebook()
-        },
-        {
-          text: "Twitter",
-          icon: "logo-twitter",
-          handler: this.shareViaTwitter()
-        },
-        {
-          text: "Instagram",
-          icon: "logo-instagram",
-          handler: this.shareViaInstagram()
-        },
-        {
-          text: "Whatsapp",
-          icon: "logo-whatsapp",
-          handler: this.shareViaWhatsapp()
-        },
-        {
-          text: "Cancelar",
-          role: "cancel"
-        }
-      ]
-    });
-
-    actionSheet.present();
+    // Pega base64 da imagem no canvas
+    let dataURI = this.moldura.nativeElement.toDataURL("image/png");
+    // Abre o sheet para o usuário escolher onde quer compartilhar
+    this.social
+      .share("Wabiz #wabiz", "", dataURI)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
   };
 
-  /**
-   * Compartilha via Facebook
-   */
-  shareViaFacebook: Function = () => {
-    const loading = this.loadingCtrl.create({ content: "Aguarde..." });
-    loading.present().then(() => {
-      this.social
-        .shareViaFacebook("Wabiz #wabiz", this.picture)
-        .then(res => {
-          loading.dismiss();
-          console.log(res);
-        })
-        .catch(err => {
-          loading.dismiss();
-          console.log(err);
-        });
-    });
-  };
-  /**
-   * Compartilha via Twitter
-   */
-  shareViaTwitter: Function = () => {
-    const loading = this.loadingCtrl.create({ content: "Aguarde..." });
-    loading.present().then(() => {
-      this.social
-        .shareViaTwitter("Wabiz #wabiz", this.picture)
-        .then(res => {
-          loading.dismiss();
-          console.log(res);
-        })
-        .catch(err => {
-          loading.dismiss();
-          console.log(err);
-        });
-    });
-  };
-  /**
-   * Compartilha via Instagram
-   */
-  shareViaInstagram: Function = () => {
-    const loading = this.loadingCtrl.create({ content: "Aguarde..." });
-    loading.present().then(() => {
-      this.social
-        .shareViaInstagram("Wabiz #wabiz", this.picture)
-        .then(res => {
-          loading.dismiss();
-          console.log(res);
-        })
-        .catch(err => {
-          loading.dismiss();
-          console.log(err);
-        });
-    });
-  };
-  /**
-   * Compartilha via Whatsapp
-   */
-  shareViaWhatsapp: Function = () => {
-    const loading = this.loadingCtrl.create({ content: "Aguarde..." });
-    loading.present().then(() => {
-      this.social
-        .shareViaWhatsApp("Wabiz #wabiz", this.picture)
-        .then(res => {
-          loading.dismiss();
-          console.log(res);
-        })
-        .catch(err => {
-          loading.dismiss();
-          console.log(err);
-        });
-    });
-  };
   /**
    * Cancela a foto tirada e volta a tirar foto
    */
   cancelPhoto = () => {
+    this.context.clearRect(0, 0, this.widthSize, this.heightSize);
     this.picture = null;
-    this.cameraPreview.startCamera(this.cameraPreviewOpts).then(
-      res => {
-        console.log(res);
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    this.cameraPreview.startCamera(this.cameraPreviewOpts);
   };
 
   /**

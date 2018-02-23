@@ -20,7 +20,7 @@ import * as geodist from "geodist";
 })
 export class HomePage {
   /**
-   * Alvo de onde quero chegar.
+   * Alvo de onde quero chegar (Setado na WABiz).
    */
   public target = { lat: -23.169096, lon: -46.910313 };
   /**
@@ -36,16 +36,16 @@ export class HomePage {
    */
   public dist: number = 0;
   /**
-   * Objeto do geofence para quando o usuário cruzá-lo disparar uma notificação
+   * Objeto do geofence para quando o usuário cruzá-lo disparar uma notificação.
    */
   public fence = {
-    id: "69ca1b88-6fbe-4e80-a4d4-ff4d3748acdb", //any unique ID
+    id: "69ca1b88-6fbe-4e80-a4d4-ff4d3748acdb", // ID qualquer gerado.
     latitude: -23.169096,
     longitude: -46.910313,
     radius: 10,
     transitionType: 1,
+    // opções da notificação a ser disparada
     notification: {
-      //notification settings
       id: 1,
       title: "Estamos chegando",
       text: "Você está bem perto, estamos no estande X.",
@@ -62,34 +62,46 @@ export class HomePage {
     public modalCtrl: ModalController
   ) {}
 
-  ionViewWillLoad() {
+  /**
+   * Lifecycle para quando a view esiver prestes a ser carregada.
+   */
+  ionViewWillLoad = () => {
     const loading = this.loadingCtrl.create({ content: "Aguarde..." });
-    //loading.present().then(() => {
-    // Garante que a plataforma esta pronta antes de inicializar o mapa.
-    this.platform.ready().then(() => {
-      this.geofence.addOrUpdate(this.fence);
-      this.geolocation
-        .getCurrentPosition({ enableHighAccuracy: true })
-        .then(resp => {
-          this.accuracy = Math.round(resp.coords.accuracy);
-          this.myPos = {
-            lat: resp.coords.latitude,
-            lon: resp.coords.longitude
-          };
-          this.startCompass();
-          this.getDistance();
-          loading.dismiss();
-        });
+    loading.present().then(() => {
+      // Garante que a plataforma esta pronta antes de inicializar o mapa, precisa da plataforma para usar plugins.
+      this.platform.ready().then(() => {
+        // Cria a geofence
+        this.geofence.addOrUpdate(this.fence);
+        // Pega a posição atual
+        this.geolocation
+          .getCurrentPosition({ enableHighAccuracy: true })
+          .then(resp => {
+            // Pega a precisão da coordenada
+            this.accuracy = Math.round(resp.coords.accuracy);
+            // salva minha posição
+            this.myPos = {
+              lat: resp.coords.latitude,
+              lon: resp.coords.longitude
+            };
+
+            // inicializa a bussola
+            this.startCompass();
+            // pega a distancia entre meu ponto e o ponto de destino atual;
+            this.getDistance();
+            loading.dismiss();
+          });
+      });
     });
-    //});
-  }
+  };
 
   /**
-   * Bussola
+   * Inicializa a bussola
    */
   startCompass = () => {
+    // pega a imagem da bussola no HTML
     let compass = document.getElementById("ponteiro");
-    const subscription = this.geolocation
+    // cria observavel na geolocaliação
+    this.geolocation
       .watchPosition({ enableHighAccuracy: true })
       .filter(p => p.coords !== undefined)
       .subscribe(resp => {
@@ -99,11 +111,12 @@ export class HomePage {
       });
     /**
      * Watcher da orientação do device.
-     * A cada 1000ms pega a orientação do aparelho e altera a posição do compasso.
+     * A cada 200ms pega a orientação do aparelho e altera a posição do compasso.
      */
-    const orientation = this.deviceOrientation
+    this.deviceOrientation
       .watchHeading({ frequency: 200 })
       .subscribe((data: DeviceOrientationCompassHeading) => {
+        // se já tem a minha posição calcula o angulo e altera a imagem.
         if (this.myPos) {
           // pega o angulo
           let angleDeg = this.getAngle();

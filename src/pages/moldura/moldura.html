@@ -1,15 +1,16 @@
 <ion-content>
-  <!-- COM FOTO -->
+  <!-- SE TEM FOTO, PRECISA SER HIDDEN OU DA ERRO NO .ts PRA PEGAR O ELEMENTO COM O VIEWCHILD -->
   <div class="foto" [hidden]="!picture">
     <canvas id="moldura" #moldura [width]="widthSize" [height]="heightSize"></canvas>
   </div>
-  <!-- SEM TIRAR FOTO -->
+  <!-- SE NÃO TEM FOTO -->
   <div *ngIf="!picture" class="foto">
     <img src="assets/imgs/wabiz.png" alt="Moldura">
   </div>
 </ion-content>
 
 <ion-footer text-center>
+  <!-- SE NÃO TEM FOTO -->
   <ion-buttons *ngIf="!picture">
     <button ion-button icon-only round color="danger" (click)="goBack()">
       <ion-icon name="arrow-back"></ion-icon>
@@ -21,6 +22,7 @@
       <ion-icon name="refresh"></ion-icon>
     </button>
   </ion-buttons>
+  <!-- SE TEM FOTO -->
   <ion-buttons *ngIf="picture">
     <button ion-button icon-only round color="danger" (click)="cancelPhoto()">
       <ion-icon name="arrow-back"></ion-icon>
